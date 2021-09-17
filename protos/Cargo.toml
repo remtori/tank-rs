@@ -10,4 +10,6 @@ path = "lib.rs"
 protobuf = "2.0"
 
 [build-dependencies]
+protoc = "2.0"
 protobuf-codegen-pure = "2.0"
+npm_rs = "0.2"
