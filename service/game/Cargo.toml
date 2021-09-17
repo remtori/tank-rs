@@ -1,0 +1,23 @@
+[package]
+name = "game"
+version = "0.0.0"
+edition = "2018"
+
+[dependencies]
+# Error handling
+anyhow = "1.0"
+
+# Cli argument parser
+clap = "2.0"
+
+# Logging utility
+tracing = "0.1"
+
+# Websocket Impl
+tungstenite = "0.15"
+
+protos = { path = "../../protos" }
+
+[features]
+default = [ "tick-log" ]
+tick-log = []

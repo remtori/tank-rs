@@ -1,0 +1,13 @@
+[package]
+name = "protos"
+version = "0.0.0"
+edition = "2018"
+
+[lib]
+path = "lib.rs"
+
+[dependencies]
+protobuf = "2.0"
+
+[build-dependencies]
+protobuf-codegen-pure = "2.0"

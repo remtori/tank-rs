@@ -1,0 +1,12 @@
+config:
+  target: "ws://localhost:3333/"
+  phases:
+    - duration: 20
+      arrivalRate: 3
+
+scenarios:
+  - engine: ws
+    flow:
+      - loop:
+          - send: "Hello from Artillery"
+            count: 100
