@@ -1,9 +1,7 @@
 use std::{
-    cell::RefCell,
     collections::{HashMap, HashSet},
     io,
     net::{TcpListener, TcpStream, ToSocketAddrs},
-    rc::Rc,
 };
 
 use anyhow::Context;
@@ -106,7 +104,7 @@ impl WsNetServer {
                 }
                 Err(HandshakeError::Interrupted(handshake)) => Some(handshake),
                 Err(err) => {
-                    eprintln!("Handshake Error: {:?}", err);
+                    log::warn!("Websocket Handshake Error: {:?}", err);
                     None
                 }
             })
@@ -124,7 +122,7 @@ impl WsNetServer {
                         self.pending_handshake.push(handshake);
                     }
                     Err(err) => {
-                        eprintln!("Handshake Error: {:?}", err)
+                        log::warn!("Websocket Handshake Error: {:?}", err)
                     }
                 },
                 Err(err) if err.kind() == io::ErrorKind::WouldBlock => {
@@ -132,7 +130,7 @@ impl WsNetServer {
                     break;
                 }
                 Err(err) => {
-                    eprintln!("Accepting Error: {:?}", err)
+                    panic!("Tcp Accepting Error {:?}", err);
                 }
             }
         }
@@ -167,12 +165,12 @@ impl NetworkServer for WsNetServer {
                     if err.kind() == io::ErrorKind::WouldBlock {
                         // out of data, skip
                     } else {
-                        // eprintln!("IO Read Error: {:?}", err);
+                        log::warn!("Websocket IO Read Error: {:?}", err);
                         bad_clients.insert(*id);
                     }
                 }
                 Err(err) => {
-                    eprintln!("Read Error: {:?}", err);
+                    log::error!("Websocket Error: {:?}", err);
                 }
             });
     }
@@ -191,12 +189,13 @@ impl NetworkServer for WsNetServer {
                     true
                 } else {
                     self.bad_clients.insert(*id);
-                    // eprintln!("IO Write Error: {:?}", err);
+                    log::warn!("Websocket IO Write Error: {:?}", err);
                     false
                 }
             }
             Err(err) => {
-                eprintln!("Write Error: {:?}", err);
+                self.bad_clients.insert(*id);
+                log::error!("Websocket Write Error: {:?}", err);
                 false
             }
         }
@@ -205,6 +204,7 @@ impl NetworkServer for WsNetServer {
     fn flush(&mut self) {
         self.remove_bad_clients();
 
+        let bad_clients = &mut self.bad_clients;
         let mut pending_flush_clients = self.clients.values_mut().collect::<Vec<_>>();
         loop {
             pending_flush_clients = pending_flush_clients
@@ -213,7 +213,8 @@ impl NetworkServer for WsNetServer {
                     Ok(true) => Some(client),
                     Ok(false) => None,
                     Err(err) => {
-                        eprintln!("Write Error: {:?}", err);
+                        bad_clients.insert(client.id);
+                        log::warn!("Websocket Write Error: {:?}", err);
                         None
                     }
                 })

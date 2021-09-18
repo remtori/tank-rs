@@ -11,7 +11,7 @@ anyhow = "1.0"
 clap = "2.0"
 
 # Logging utility
-tracing = "0.1"
+log = "0.4"
 
 # Websocket Impl
 tungstenite = "0.15"

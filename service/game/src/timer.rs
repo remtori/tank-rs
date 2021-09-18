@@ -54,7 +54,7 @@ impl Timer {
 
             let num = NUM_ITERATION.fetch_add(1, Ordering::SeqCst) + 1;
 
-            print!(
+            log::trace!(
                 "\rTick duration: {:9}μs Avg: {:9}μs N: {}",
                 tick_duration.as_micros(),
                 acc / num,
