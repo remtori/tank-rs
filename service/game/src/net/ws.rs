@@ -177,18 +177,15 @@ impl NetworkServer for WsNetServer {
         self.remove_bad_clients();
     }
 
-    fn write(&mut self, id: &UserNetId, buffer: &[u8]) -> bool {
-        let client = match self.clients.get_mut(id) {
-            Some(client) => client,
-            None => return false,
-        };
+    fn write(&mut self, id: &UserNetId, buffer: &[u8]) -> Option<bool> {
+        let client = self.clients.get_mut(id)?;
 
         match client.write_message(Message::Binary(buffer.to_vec())) {
-            Ok(_) => return true,
+            Ok(_) => return Some(true),
             Err(tungstenite::Error::Io(err)) => {
                 if err.kind() == io::ErrorKind::WouldBlock {
                     // need flush later
-                    return true;
+                    return Some(true);
                 } else {
                     self.bad_clients.insert(*id);
                     log::warn!("Websocket IO Write Error: {:?}", err);
@@ -201,7 +198,7 @@ impl NetworkServer for WsNetServer {
         }
 
         self.remove_bad_clients();
-        false
+        Some(false)
     }
 
     fn flush(&mut self) {

@@ -7,8 +7,9 @@ pub trait NetworkServer {
 
     /// Send a message to UserId
     ///
-    /// Return true on success
-    fn write(&mut self, id: &UserNetId, buffer: &[u8]) -> bool;
+    /// Return Some(true) on success
+    ///        None if this server do not contains this net id
+    fn write(&mut self, id: &UserNetId, buffer: &[u8]) -> Option<bool>;
 
     /// Flush pending write message
     fn flush(&mut self);

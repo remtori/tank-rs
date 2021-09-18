@@ -80,18 +80,15 @@ impl NetworkServer for UdpNetServer {
         self.remove_bad_clients();
     }
 
-    fn write(&mut self, id: &UserNetId, buffer: &[u8]) -> bool {
-        let addr = match self.clients.get(id) {
-            Some(addr) => *addr,
-            None => return false,
-        };
+    fn write(&mut self, id: &UserNetId, buffer: &[u8]) -> Option<bool> {
+        let addr = self.clients.get(id)?;
 
         let mut buffer = buffer;
         loop {
             match self.socket.send_to(buffer, addr) {
                 Ok(n_write) => {
                     if n_write == buffer.len() {
-                        return true;
+                        return Some(true);
                     }
 
                     buffer = &buffer[n_write..];
@@ -109,7 +106,7 @@ impl NetworkServer for UdpNetServer {
         }
 
         self.remove_bad_clients();
-        false
+        Some(false)
     }
 
     fn flush(&mut self) {
