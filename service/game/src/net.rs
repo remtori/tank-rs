@@ -1,7 +1,13 @@
+use std::net::ToSocketAddrs;
+
 pub mod udp;
 pub mod ws;
 
 pub trait NetworkServer {
+    fn new<A: ToSocketAddrs>(addr: A) -> Result<Self, anyhow::Error>
+    where
+        Self: Sized;
+
     /// Read avaiable message to buffer
     fn read(&mut self, buffer: &mut Vec<ClientMessage>);
 

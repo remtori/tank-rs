@@ -75,20 +75,6 @@ pub struct WsNetServer {
 }
 
 impl WsNetServer {
-    pub fn new<A: ToSocketAddrs>(addr: A) -> Result<Self, anyhow::Error> {
-        let listener = TcpListener::bind(addr).context("Bind new TcpListener")?;
-        listener
-            .set_nonblocking(true)
-            .context("Set TcpListener to non blocking")?;
-
-        Ok(Self {
-            listener,
-            clients: HashMap::new(),
-            bad_clients: HashSet::new(),
-            pending_handshake: Vec::new(),
-        })
-    }
-
     fn accept_new_incoming(&mut self) {
         let clients = &mut self.clients;
 
@@ -144,6 +130,20 @@ impl WsNetServer {
 }
 
 impl NetworkServer for WsNetServer {
+    fn new<A: ToSocketAddrs>(addr: A) -> Result<Self, anyhow::Error> {
+        let listener = TcpListener::bind(addr).context("Bind new TcpListener")?;
+        listener
+            .set_nonblocking(true)
+            .context("Set TcpListener to non blocking")?;
+
+        Ok(Self {
+            listener,
+            clients: HashMap::new(),
+            bad_clients: HashSet::new(),
+            pending_handshake: Vec::new(),
+        })
+    }
+
     fn read(&mut self, buffer: &mut Vec<ClientMessage>) {
         self.accept_new_incoming();
 

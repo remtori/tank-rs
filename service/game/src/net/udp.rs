@@ -16,18 +16,6 @@ pub struct UdpNetServer {
 }
 
 impl UdpNetServer {
-    pub fn new<A: ToSocketAddrs>(addr: A) -> Result<Self, anyhow::Error> {
-        let socket = UdpSocket::bind(addr).context("Bind new UdpSocket")?;
-        socket.set_nonblocking(true).context("Set UdpSocket to non blocking")?;
-
-        Ok(Self {
-            socket,
-            clients: HashMap::new(),
-            bad_clients: HashSet::new(),
-            addr_to_net_id: HashMap::new(),
-        })
-    }
-
     /// Map SocketAddress to UserNetId
     ///
     /// Create new mapping if non found
@@ -54,6 +42,18 @@ impl UdpNetServer {
 }
 
 impl NetworkServer for UdpNetServer {
+    fn new<A: ToSocketAddrs>(addr: A) -> Result<Self, anyhow::Error> {
+        let socket = UdpSocket::bind(addr).context("Bind new UdpSocket")?;
+        socket.set_nonblocking(true).context("Set UdpSocket to non blocking")?;
+
+        Ok(Self {
+            socket,
+            clients: HashMap::new(),
+            bad_clients: HashSet::new(),
+            addr_to_net_id: HashMap::new(),
+        })
+    }
+
     fn read(&mut self, message_buffer: &mut Vec<ClientMessage>) {
         let buffer = &mut [0; 4096];
 
