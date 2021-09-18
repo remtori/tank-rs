@@ -24,22 +24,30 @@
 // const _PROTOBUF_VERSION_CHECK: () = ::protobuf::VERSION_2_25_1;
 
 #[derive(PartialEq,Clone,Default)]
-pub struct Hello {
+pub struct ClientMove {
     // message fields
     pub id: u32,
+    pub session_id_lo: u32,
+    pub session_id_hi: u32,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+    pub pitch: f64,
+    pub yaw: f64,
+    pub actions: ::std::vec::Vec<Action>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
 }
 
-impl<'a> ::std::default::Default for &'a Hello {
-    fn default() -> &'a Hello {
-        <Hello as ::protobuf::Message>::default_instance()
+impl<'a> ::std::default::Default for &'a ClientMove {
+    fn default() -> &'a ClientMove {
+        <ClientMove as ::protobuf::Message>::default_instance()
     }
 }
 
-impl Hello {
-    pub fn new() -> Hello {
+impl ClientMove {
+    pub fn new() -> ClientMove {
         ::std::default::Default::default()
     }
 
@@ -57,9 +65,139 @@ impl Hello {
     pub fn set_id(&mut self, v: u32) {
         self.id = v;
     }
+
+    // uint32 session_id_lo = 2;
+
+
+    pub fn get_session_id_lo(&self) -> u32 {
+        self.session_id_lo
+    }
+    pub fn clear_session_id_lo(&mut self) {
+        self.session_id_lo = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_session_id_lo(&mut self, v: u32) {
+        self.session_id_lo = v;
+    }
+
+    // uint32 session_id_hi = 3;
+
+
+    pub fn get_session_id_hi(&self) -> u32 {
+        self.session_id_hi
+    }
+    pub fn clear_session_id_hi(&mut self) {
+        self.session_id_hi = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_session_id_hi(&mut self, v: u32) {
+        self.session_id_hi = v;
+    }
+
+    // double x = 4;
+
+
+    pub fn get_x(&self) -> f64 {
+        self.x
+    }
+    pub fn clear_x(&mut self) {
+        self.x = 0.;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_x(&mut self, v: f64) {
+        self.x = v;
+    }
+
+    // double y = 5;
+
+
+    pub fn get_y(&self) -> f64 {
+        self.y
+    }
+    pub fn clear_y(&mut self) {
+        self.y = 0.;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_y(&mut self, v: f64) {
+        self.y = v;
+    }
+
+    // double z = 6;
+
+
+    pub fn get_z(&self) -> f64 {
+        self.z
+    }
+    pub fn clear_z(&mut self) {
+        self.z = 0.;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_z(&mut self, v: f64) {
+        self.z = v;
+    }
+
+    // double pitch = 7;
+
+
+    pub fn get_pitch(&self) -> f64 {
+        self.pitch
+    }
+    pub fn clear_pitch(&mut self) {
+        self.pitch = 0.;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_pitch(&mut self, v: f64) {
+        self.pitch = v;
+    }
+
+    // double yaw = 8;
+
+
+    pub fn get_yaw(&self) -> f64 {
+        self.yaw
+    }
+    pub fn clear_yaw(&mut self) {
+        self.yaw = 0.;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_yaw(&mut self, v: f64) {
+        self.yaw = v;
+    }
+
+    // repeated .Action actions = 9;
+
+
+    pub fn get_actions(&self) -> &[Action] {
+        &self.actions
+    }
+    pub fn clear_actions(&mut self) {
+        self.actions.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_actions(&mut self, v: ::std::vec::Vec<Action>) {
+        self.actions = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_actions(&mut self) -> &mut ::std::vec::Vec<Action> {
+        &mut self.actions
+    }
+
+    // Take field
+    pub fn take_actions(&mut self) -> ::std::vec::Vec<Action> {
+        ::std::mem::replace(&mut self.actions, ::std::vec::Vec::new())
+    }
 }
 
-impl ::protobuf::Message for Hello {
+impl ::protobuf::Message for ClientMove {
     fn is_initialized(&self) -> bool {
         true
     }
@@ -74,6 +212,58 @@ impl ::protobuf::Message for Hello {
                     }
                     let tmp = is.read_uint32()?;
                     self.id = tmp;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.session_id_lo = tmp;
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.session_id_hi = tmp;
+                },
+                4 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_double()?;
+                    self.x = tmp;
+                },
+                5 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_double()?;
+                    self.y = tmp;
+                },
+                6 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_double()?;
+                    self.z = tmp;
+                },
+                7 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_double()?;
+                    self.pitch = tmp;
+                },
+                8 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_double()?;
+                    self.yaw = tmp;
+                },
+                9 => {
+                    ::protobuf::rt::read_repeated_enum_with_unknown_fields_into(wire_type, is, &mut self.actions, 9, &mut self.unknown_fields)?
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -90,6 +280,30 @@ impl ::protobuf::Message for Hello {
         if self.id != 0 {
             my_size += ::protobuf::rt::value_size(1, self.id, ::protobuf::wire_format::WireTypeVarint);
         }
+        if self.session_id_lo != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.session_id_lo, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.session_id_hi != 0 {
+            my_size += ::protobuf::rt::value_size(3, self.session_id_hi, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.x != 0. {
+            my_size += 9;
+        }
+        if self.y != 0. {
+            my_size += 9;
+        }
+        if self.z != 0. {
+            my_size += 9;
+        }
+        if self.pitch != 0. {
+            my_size += 9;
+        }
+        if self.yaw != 0. {
+            my_size += 9;
+        }
+        for value in &self.actions {
+            my_size += ::protobuf::rt::enum_size(9, *value);
+        };
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -98,6 +312,439 @@ impl ::protobuf::Message for Hello {
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
         if self.id != 0 {
             os.write_uint32(1, self.id)?;
+        }
+        if self.session_id_lo != 0 {
+            os.write_uint32(2, self.session_id_lo)?;
+        }
+        if self.session_id_hi != 0 {
+            os.write_uint32(3, self.session_id_hi)?;
+        }
+        if self.x != 0. {
+            os.write_double(4, self.x)?;
+        }
+        if self.y != 0. {
+            os.write_double(5, self.y)?;
+        }
+        if self.z != 0. {
+            os.write_double(6, self.z)?;
+        }
+        if self.pitch != 0. {
+            os.write_double(7, self.pitch)?;
+        }
+        if self.yaw != 0. {
+            os.write_double(8, self.yaw)?;
+        }
+        for v in &self.actions {
+            os.write_enum(9, ::protobuf::ProtobufEnum::value(v))?;
+        };
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> ClientMove {
+        ClientMove::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "id",
+                |m: &ClientMove| { &m.id },
+                |m: &mut ClientMove| { &mut m.id },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "session_id_lo",
+                |m: &ClientMove| { &m.session_id_lo },
+                |m: &mut ClientMove| { &mut m.session_id_lo },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "session_id_hi",
+                |m: &ClientMove| { &m.session_id_hi },
+                |m: &mut ClientMove| { &mut m.session_id_hi },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
+                "x",
+                |m: &ClientMove| { &m.x },
+                |m: &mut ClientMove| { &mut m.x },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
+                "y",
+                |m: &ClientMove| { &m.y },
+                |m: &mut ClientMove| { &mut m.y },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
+                "z",
+                |m: &ClientMove| { &m.z },
+                |m: &mut ClientMove| { &mut m.z },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
+                "pitch",
+                |m: &ClientMove| { &m.pitch },
+                |m: &mut ClientMove| { &mut m.pitch },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
+                "yaw",
+                |m: &ClientMove| { &m.yaw },
+                |m: &mut ClientMove| { &mut m.yaw },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_vec_accessor::<_, ::protobuf::types::ProtobufTypeEnum<Action>>(
+                "actions",
+                |m: &ClientMove| { &m.actions },
+                |m: &mut ClientMove| { &mut m.actions },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<ClientMove>(
+                "ClientMove",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static ClientMove {
+        static instance: ::protobuf::rt::LazyV2<ClientMove> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(ClientMove::new)
+    }
+}
+
+impl ::protobuf::Clear for ClientMove {
+    fn clear(&mut self) {
+        self.id = 0;
+        self.session_id_lo = 0;
+        self.session_id_hi = 0;
+        self.x = 0.;
+        self.y = 0.;
+        self.z = 0.;
+        self.pitch = 0.;
+        self.yaw = 0.;
+        self.actions.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for ClientMove {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ClientMove {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct ServerMove {
+    // message fields
+    pub id: u32,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+    pub pitch: f64,
+    pub yaw: f64,
+    pub actions: ::std::vec::Vec<Action>,
+    pub rtt: u32,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a ServerMove {
+    fn default() -> &'a ServerMove {
+        <ServerMove as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ServerMove {
+    pub fn new() -> ServerMove {
+        ::std::default::Default::default()
+    }
+
+    // uint32 id = 1;
+
+
+    pub fn get_id(&self) -> u32 {
+        self.id
+    }
+    pub fn clear_id(&mut self) {
+        self.id = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_id(&mut self, v: u32) {
+        self.id = v;
+    }
+
+    // double x = 3;
+
+
+    pub fn get_x(&self) -> f64 {
+        self.x
+    }
+    pub fn clear_x(&mut self) {
+        self.x = 0.;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_x(&mut self, v: f64) {
+        self.x = v;
+    }
+
+    // double y = 4;
+
+
+    pub fn get_y(&self) -> f64 {
+        self.y
+    }
+    pub fn clear_y(&mut self) {
+        self.y = 0.;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_y(&mut self, v: f64) {
+        self.y = v;
+    }
+
+    // double z = 5;
+
+
+    pub fn get_z(&self) -> f64 {
+        self.z
+    }
+    pub fn clear_z(&mut self) {
+        self.z = 0.;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_z(&mut self, v: f64) {
+        self.z = v;
+    }
+
+    // double pitch = 6;
+
+
+    pub fn get_pitch(&self) -> f64 {
+        self.pitch
+    }
+    pub fn clear_pitch(&mut self) {
+        self.pitch = 0.;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_pitch(&mut self, v: f64) {
+        self.pitch = v;
+    }
+
+    // double yaw = 7;
+
+
+    pub fn get_yaw(&self) -> f64 {
+        self.yaw
+    }
+    pub fn clear_yaw(&mut self) {
+        self.yaw = 0.;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_yaw(&mut self, v: f64) {
+        self.yaw = v;
+    }
+
+    // repeated .Action actions = 8;
+
+
+    pub fn get_actions(&self) -> &[Action] {
+        &self.actions
+    }
+    pub fn clear_actions(&mut self) {
+        self.actions.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_actions(&mut self, v: ::std::vec::Vec<Action>) {
+        self.actions = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_actions(&mut self) -> &mut ::std::vec::Vec<Action> {
+        &mut self.actions
+    }
+
+    // Take field
+    pub fn take_actions(&mut self) -> ::std::vec::Vec<Action> {
+        ::std::mem::replace(&mut self.actions, ::std::vec::Vec::new())
+    }
+
+    // uint32 rtt = 9;
+
+
+    pub fn get_rtt(&self) -> u32 {
+        self.rtt
+    }
+    pub fn clear_rtt(&mut self) {
+        self.rtt = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_rtt(&mut self, v: u32) {
+        self.rtt = v;
+    }
+}
+
+impl ::protobuf::Message for ServerMove {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.id = tmp;
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_double()?;
+                    self.x = tmp;
+                },
+                4 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_double()?;
+                    self.y = tmp;
+                },
+                5 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_double()?;
+                    self.z = tmp;
+                },
+                6 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_double()?;
+                    self.pitch = tmp;
+                },
+                7 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_double()?;
+                    self.yaw = tmp;
+                },
+                8 => {
+                    ::protobuf::rt::read_repeated_enum_with_unknown_fields_into(wire_type, is, &mut self.actions, 8, &mut self.unknown_fields)?
+                },
+                9 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.rtt = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.id != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.id, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.x != 0. {
+            my_size += 9;
+        }
+        if self.y != 0. {
+            my_size += 9;
+        }
+        if self.z != 0. {
+            my_size += 9;
+        }
+        if self.pitch != 0. {
+            my_size += 9;
+        }
+        if self.yaw != 0. {
+            my_size += 9;
+        }
+        for value in &self.actions {
+            my_size += ::protobuf::rt::enum_size(8, *value);
+        };
+        if self.rtt != 0 {
+            my_size += ::protobuf::rt::value_size(9, self.rtt, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.id != 0 {
+            os.write_uint32(1, self.id)?;
+        }
+        if self.x != 0. {
+            os.write_double(3, self.x)?;
+        }
+        if self.y != 0. {
+            os.write_double(4, self.y)?;
+        }
+        if self.z != 0. {
+            os.write_double(5, self.z)?;
+        }
+        if self.pitch != 0. {
+            os.write_double(6, self.pitch)?;
+        }
+        if self.yaw != 0. {
+            os.write_double(7, self.yaw)?;
+        }
+        for v in &self.actions {
+            os.write_enum(8, ::protobuf::ProtobufEnum::value(v))?;
+        };
+        if self.rtt != 0 {
+            os.write_uint32(9, self.rtt)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -129,8 +776,8 @@ impl ::protobuf::Message for Hello {
         Self::descriptor_static()
     }
 
-    fn new() -> Hello {
-        Hello::new()
+    fn new() -> ServerMove {
+        ServerMove::new()
     }
 
     fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
@@ -139,45 +786,150 @@ impl ::protobuf::Message for Hello {
             let mut fields = ::std::vec::Vec::new();
             fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
                 "id",
-                |m: &Hello| { &m.id },
-                |m: &mut Hello| { &mut m.id },
+                |m: &ServerMove| { &m.id },
+                |m: &mut ServerMove| { &mut m.id },
             ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<Hello>(
-                "Hello",
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
+                "x",
+                |m: &ServerMove| { &m.x },
+                |m: &mut ServerMove| { &mut m.x },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
+                "y",
+                |m: &ServerMove| { &m.y },
+                |m: &mut ServerMove| { &mut m.y },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
+                "z",
+                |m: &ServerMove| { &m.z },
+                |m: &mut ServerMove| { &mut m.z },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
+                "pitch",
+                |m: &ServerMove| { &m.pitch },
+                |m: &mut ServerMove| { &mut m.pitch },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
+                "yaw",
+                |m: &ServerMove| { &m.yaw },
+                |m: &mut ServerMove| { &mut m.yaw },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_vec_accessor::<_, ::protobuf::types::ProtobufTypeEnum<Action>>(
+                "actions",
+                |m: &ServerMove| { &m.actions },
+                |m: &mut ServerMove| { &mut m.actions },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                "rtt",
+                |m: &ServerMove| { &m.rtt },
+                |m: &mut ServerMove| { &mut m.rtt },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<ServerMove>(
+                "ServerMove",
                 fields,
                 file_descriptor_proto()
             )
         })
     }
 
-    fn default_instance() -> &'static Hello {
-        static instance: ::protobuf::rt::LazyV2<Hello> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(Hello::new)
+    fn default_instance() -> &'static ServerMove {
+        static instance: ::protobuf::rt::LazyV2<ServerMove> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(ServerMove::new)
     }
 }
 
-impl ::protobuf::Clear for Hello {
+impl ::protobuf::Clear for ServerMove {
     fn clear(&mut self) {
         self.id = 0;
+        self.x = 0.;
+        self.y = 0.;
+        self.z = 0.;
+        self.pitch = 0.;
+        self.yaw = 0.;
+        self.actions.clear();
+        self.rtt = 0;
         self.unknown_fields.clear();
     }
 }
 
-impl ::std::fmt::Debug for Hello {
+impl ::std::fmt::Debug for ServerMove {
     fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         ::protobuf::text_format::fmt(self, f)
     }
 }
 
-impl ::protobuf::reflect::ProtobufValue for Hello {
+impl ::protobuf::reflect::ProtobufValue for ServerMove {
     fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
         ::protobuf::reflect::ReflectValueRef::Message(self)
     }
 }
 
+#[derive(Clone,PartialEq,Eq,Debug,Hash)]
+pub enum Action {
+    UNKNOWN = 0,
+    SHOOT = 1,
+}
+
+impl ::protobuf::ProtobufEnum for Action {
+    fn value(&self) -> i32 {
+        *self as i32
+    }
+
+    fn from_i32(value: i32) -> ::std::option::Option<Action> {
+        match value {
+            0 => ::std::option::Option::Some(Action::UNKNOWN),
+            1 => ::std::option::Option::Some(Action::SHOOT),
+            _ => ::std::option::Option::None
+        }
+    }
+
+    fn values() -> &'static [Self] {
+        static values: &'static [Action] = &[
+            Action::UNKNOWN,
+            Action::SHOOT,
+        ];
+        values
+    }
+
+    fn enum_descriptor_static() -> &'static ::protobuf::reflect::EnumDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::EnumDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            ::protobuf::reflect::EnumDescriptor::new_pb_name::<Action>("Action", file_descriptor_proto())
+        })
+    }
+}
+
+impl ::std::marker::Copy for Action {
+}
+
+impl ::std::default::Default for Action {
+    fn default() -> Self {
+        Action::UNKNOWN
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for Action {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Enum(::protobuf::ProtobufEnum::descriptor(self))
+    }
+}
+
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\ngame.proto\"\x1b\n\x05Hello\x12\x10\n\x02id\x18\x01\x20\x01(\rR\x02i\
-    dB\0:\0B\0b\x06proto3\
+    \n\ngame.proto\"\xed\x01\n\nClientMove\x12\x10\n\x02id\x18\x01\x20\x01(\
+    \rR\x02idB\0\x12$\n\rsession_id_lo\x18\x02\x20\x01(\rR\x0bsessionIdLoB\0\
+    \x12$\n\rsession_id_hi\x18\x03\x20\x01(\rR\x0bsessionIdHiB\0\x12\x0e\n\
+    \x01x\x18\x04\x20\x01(\x01R\x01xB\0\x12\x0e\n\x01y\x18\x05\x20\x01(\x01R\
+    \x01yB\0\x12\x0e\n\x01z\x18\x06\x20\x01(\x01R\x01zB\0\x12\x16\n\x05pitch\
+    \x18\x07\x20\x01(\x01R\x05pitchB\0\x12\x12\n\x03yaw\x18\x08\x20\x01(\x01\
+    R\x03yawB\0\x12#\n\x07actions\x18\t\x20\x03(\x0e2\x07.ActionR\x07actions\
+    B\0:\0\"\xb5\x01\n\nServerMove\x12\x10\n\x02id\x18\x01\x20\x01(\rR\x02id\
+    B\0\x12\x0e\n\x01x\x18\x03\x20\x01(\x01R\x01xB\0\x12\x0e\n\x01y\x18\x04\
+    \x20\x01(\x01R\x01yB\0\x12\x0e\n\x01z\x18\x05\x20\x01(\x01R\x01zB\0\x12\
+    \x16\n\x05pitch\x18\x06\x20\x01(\x01R\x05pitchB\0\x12\x12\n\x03yaw\x18\
+    \x07\x20\x01(\x01R\x03yawB\0\x12#\n\x07actions\x18\x08\x20\x03(\x0e2\x07\
+    .ActionR\x07actionsB\0\x12\x12\n\x03rtt\x18\t\x20\x01(\rR\x03rttB\0:\0*\
+    \"\n\x06Action\x12\x0b\n\x07UNKNOWN\x10\0\x12\t\n\x05SHOOT\x10\x01\x1a\0\
+    B\0b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;
