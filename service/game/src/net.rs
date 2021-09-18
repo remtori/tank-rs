@@ -1,3 +1,4 @@
+pub mod udp;
 pub mod ws;
 
 pub trait NetworkServer {
