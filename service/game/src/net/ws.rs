@@ -173,6 +173,8 @@ impl NetworkServer for WsNetServer {
                     log::error!("Websocket Error: {:?}", err);
                 }
             });
+
+        self.remove_bad_clients();
     }
 
     fn write(&mut self, id: &UserNetId, buffer: &[u8]) -> bool {
@@ -182,28 +184,27 @@ impl NetworkServer for WsNetServer {
         };
 
         match client.write_message(Message::Binary(buffer.to_vec())) {
-            Ok(_) => true,
+            Ok(_) => return true,
             Err(tungstenite::Error::Io(err)) => {
                 if err.kind() == io::ErrorKind::WouldBlock {
                     // need flush later
-                    true
+                    return true;
                 } else {
                     self.bad_clients.insert(*id);
                     log::warn!("Websocket IO Write Error: {:?}", err);
-                    false
                 }
             }
             Err(err) => {
                 self.bad_clients.insert(*id);
                 log::error!("Websocket Write Error: {:?}", err);
-                false
             }
         }
+
+        self.remove_bad_clients();
+        false
     }
 
     fn flush(&mut self) {
-        self.remove_bad_clients();
-
         let bad_clients = &mut self.bad_clients;
         let mut pending_flush_clients = self.clients.values_mut().collect::<Vec<_>>();
         loop {
