@@ -5,7 +5,7 @@ use std::net::TcpListener;
 use anyhow::Context;
 use clap::{App, AppSettings, Arg};
 
-mod server;
+mod net;
 mod timer;
 
 fn main() -> Result<(), anyhow::Error> {
@@ -62,10 +62,5 @@ fn main() -> Result<(), anyhow::Error> {
         .parse::<u16>()
         .context("tps must be u16")?;
 
-    let listener = TcpListener::bind((host, port)).context(format!("Failed to listen to: {}:{}", host, port))?;
-    listener
-        .set_nonblocking(true)
-        .context("Failed to set TcpListener to nonblocking")?;
-
-    server::Server::new(id.to_owned(), tps as u32, listener).run();
+    Ok(())
 }
