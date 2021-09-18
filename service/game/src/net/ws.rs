@@ -38,30 +38,30 @@ type ServerMidHandshake = MidHandshake<ServerHandshake<TcpStream, WsCallback>>;
 
 type WS = WebSocket<TcpStream>;
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 struct WsClient {
     id: UserNetId,
-    ws: Rc<RefCell<WS>>,
+    ws: WS,
 }
 
 impl WsClient {
     pub fn new(ws: WS) -> Self {
         Self {
             id: UserNetId::next(),
-            ws: Rc::new(RefCell::new(ws)),
+            ws,
         }
     }
 
-    pub fn read_message(&self) -> Result<Message, tungstenite::Error> {
-        self.ws.borrow_mut().read_message()
+    pub fn read_message(&mut self) -> Result<Message, tungstenite::Error> {
+        self.ws.read_message()
     }
 
-    pub fn write_message(&self, message: Message) -> Result<(), tungstenite::Error> {
-        self.ws.borrow_mut().write_message(message)
+    pub fn write_message(&mut self, message: Message) -> Result<(), tungstenite::Error> {
+        self.ws.write_message(message)
     }
 
-    pub fn write_pending(&self) -> Result<bool, tungstenite::Error> {
-        match self.ws.borrow_mut().write_pending() {
+    pub fn write_pending(&mut self) -> Result<bool, tungstenite::Error> {
+        match self.ws.write_pending() {
             Ok(_) => Ok(false),
             Err(tungstenite::Error::Io(err)) if err.kind() == io::ErrorKind::WouldBlock => Ok(false),
             Err(err) => Err(err),
@@ -152,7 +152,7 @@ impl NetworkServer for WsNetServer {
         let bad_clients = &mut self.bad_clients;
 
         self.clients
-            .iter()
+            .iter_mut()
             .for_each(|(id, client)| match client.read_message() {
                 Ok(msg @ Message::Text(_)) | Ok(msg @ Message::Binary(_)) => {
                     buffer.push(ClientMessage {
@@ -178,7 +178,7 @@ impl NetworkServer for WsNetServer {
     }
 
     fn write(&mut self, id: &UserNetId, buffer: &[u8]) -> bool {
-        let client = match self.clients.get(id) {
+        let client = match self.clients.get_mut(id) {
             Some(client) => client,
             None => return false,
         };
@@ -205,7 +205,7 @@ impl NetworkServer for WsNetServer {
     fn flush(&mut self) {
         self.remove_bad_clients();
 
-        let mut pending_flush_clients = self.clients.values().collect::<Vec<_>>();
+        let mut pending_flush_clients = self.clients.values_mut().collect::<Vec<_>>();
         loop {
             pending_flush_clients = pending_flush_clients
                 .into_iter()
