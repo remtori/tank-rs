@@ -37,9 +37,9 @@ export function actionToJSON(object: Action): string {
 }
 
 export interface ClientMove {
+  tick: number;
   id: number;
-  sessionIdLo: number;
-  sessionIdHi: number;
+  sessionId: number;
   x: number;
   y: number;
   z: number;
@@ -49,6 +49,7 @@ export interface ClientMove {
 }
 
 export interface ServerMove {
+  tick: number;
   id: number;
   x: number;
   y: number;
@@ -60,9 +61,9 @@ export interface ServerMove {
 }
 
 const baseClientMove: object = {
+  tick: 0,
   id: 0,
-  sessionIdLo: 0,
-  sessionIdHi: 0,
+  sessionId: 0,
   x: 0,
   y: 0,
   z: 0,
@@ -73,14 +74,14 @@ const baseClientMove: object = {
 
 export const ClientMove = {
   encode(message: ClientMove, writer: Writer = Writer.create()): Writer {
+    if (message.tick !== 0) {
+      writer.uint32(8).uint64(message.tick);
+    }
     if (message.id !== 0) {
-      writer.uint32(8).uint32(message.id);
+      writer.uint32(16).uint32(message.id);
     }
-    if (message.sessionIdLo !== 0) {
-      writer.uint32(16).uint32(message.sessionIdLo);
-    }
-    if (message.sessionIdHi !== 0) {
-      writer.uint32(24).uint32(message.sessionIdHi);
+    if (message.sessionId !== 0) {
+      writer.uint32(24).uint64(message.sessionId);
     }
     if (message.x !== 0) {
       writer.uint32(33).double(message.x);
@@ -114,13 +115,13 @@ export const ClientMove = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.uint32();
+          message.tick = longToNumber(reader.uint64() as Long);
           break;
         case 2:
-          message.sessionIdLo = reader.uint32();
+          message.id = reader.uint32();
           break;
         case 3:
-          message.sessionIdHi = reader.uint32();
+          message.sessionId = longToNumber(reader.uint64() as Long);
           break;
         case 4:
           message.x = reader.double();
@@ -158,20 +159,20 @@ export const ClientMove = {
   fromJSON(object: any): ClientMove {
     const message = { ...baseClientMove } as ClientMove;
     message.actions = [];
+    if (object.tick !== undefined && object.tick !== null) {
+      message.tick = Number(object.tick);
+    } else {
+      message.tick = 0;
+    }
     if (object.id !== undefined && object.id !== null) {
       message.id = Number(object.id);
     } else {
       message.id = 0;
     }
-    if (object.sessionIdLo !== undefined && object.sessionIdLo !== null) {
-      message.sessionIdLo = Number(object.sessionIdLo);
+    if (object.sessionId !== undefined && object.sessionId !== null) {
+      message.sessionId = Number(object.sessionId);
     } else {
-      message.sessionIdLo = 0;
-    }
-    if (object.sessionIdHi !== undefined && object.sessionIdHi !== null) {
-      message.sessionIdHi = Number(object.sessionIdHi);
-    } else {
-      message.sessionIdHi = 0;
+      message.sessionId = 0;
     }
     if (object.x !== undefined && object.x !== null) {
       message.x = Number(object.x);
@@ -208,11 +209,9 @@ export const ClientMove = {
 
   toJSON(message: ClientMove): unknown {
     const obj: any = {};
+    message.tick !== undefined && (obj.tick = message.tick);
     message.id !== undefined && (obj.id = message.id);
-    message.sessionIdLo !== undefined &&
-      (obj.sessionIdLo = message.sessionIdLo);
-    message.sessionIdHi !== undefined &&
-      (obj.sessionIdHi = message.sessionIdHi);
+    message.sessionId !== undefined && (obj.sessionId = message.sessionId);
     message.x !== undefined && (obj.x = message.x);
     message.y !== undefined && (obj.y = message.y);
     message.z !== undefined && (obj.z = message.z);
@@ -229,20 +228,20 @@ export const ClientMove = {
   fromPartial(object: DeepPartial<ClientMove>): ClientMove {
     const message = { ...baseClientMove } as ClientMove;
     message.actions = [];
+    if (object.tick !== undefined && object.tick !== null) {
+      message.tick = object.tick;
+    } else {
+      message.tick = 0;
+    }
     if (object.id !== undefined && object.id !== null) {
       message.id = object.id;
     } else {
       message.id = 0;
     }
-    if (object.sessionIdLo !== undefined && object.sessionIdLo !== null) {
-      message.sessionIdLo = object.sessionIdLo;
+    if (object.sessionId !== undefined && object.sessionId !== null) {
+      message.sessionId = object.sessionId;
     } else {
-      message.sessionIdLo = 0;
-    }
-    if (object.sessionIdHi !== undefined && object.sessionIdHi !== null) {
-      message.sessionIdHi = object.sessionIdHi;
-    } else {
-      message.sessionIdHi = 0;
+      message.sessionId = 0;
     }
     if (object.x !== undefined && object.x !== null) {
       message.x = object.x;
@@ -279,6 +278,7 @@ export const ClientMove = {
 };
 
 const baseServerMove: object = {
+  tick: 0,
   id: 0,
   x: 0,
   y: 0,
@@ -291,8 +291,11 @@ const baseServerMove: object = {
 
 export const ServerMove = {
   encode(message: ServerMove, writer: Writer = Writer.create()): Writer {
+    if (message.tick !== 0) {
+      writer.uint32(8).uint64(message.tick);
+    }
     if (message.id !== 0) {
-      writer.uint32(8).uint32(message.id);
+      writer.uint32(16).uint32(message.id);
     }
     if (message.x !== 0) {
       writer.uint32(25).double(message.x);
@@ -329,6 +332,9 @@ export const ServerMove = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          message.tick = longToNumber(reader.uint64() as Long);
+          break;
+        case 2:
           message.id = reader.uint32();
           break;
         case 3:
@@ -370,6 +376,11 @@ export const ServerMove = {
   fromJSON(object: any): ServerMove {
     const message = { ...baseServerMove } as ServerMove;
     message.actions = [];
+    if (object.tick !== undefined && object.tick !== null) {
+      message.tick = Number(object.tick);
+    } else {
+      message.tick = 0;
+    }
     if (object.id !== undefined && object.id !== null) {
       message.id = Number(object.id);
     } else {
@@ -415,6 +426,7 @@ export const ServerMove = {
 
   toJSON(message: ServerMove): unknown {
     const obj: any = {};
+    message.tick !== undefined && (obj.tick = message.tick);
     message.id !== undefined && (obj.id = message.id);
     message.x !== undefined && (obj.x = message.x);
     message.y !== undefined && (obj.y = message.y);
@@ -433,6 +445,11 @@ export const ServerMove = {
   fromPartial(object: DeepPartial<ServerMove>): ServerMove {
     const message = { ...baseServerMove } as ServerMove;
     message.actions = [];
+    if (object.tick !== undefined && object.tick !== null) {
+      message.tick = object.tick;
+    } else {
+      message.tick = 0;
+    }
     if (object.id !== undefined && object.id !== null) {
       message.id = object.id;
     } else {
@@ -477,6 +494,17 @@ export const ServerMove = {
   },
 };
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
 type Builtin =
   | Date
   | Function
@@ -494,6 +522,13 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
 
 // If you get a compile-error about 'Constructor<Long> and ... have no overlap',
 // add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.

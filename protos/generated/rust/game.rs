@@ -26,9 +26,9 @@
 #[derive(PartialEq,Clone,Default)]
 pub struct ClientMove {
     // message fields
+    pub tick: u64,
     pub id: u32,
-    pub session_id_lo: u32,
-    pub session_id_hi: u32,
+    pub session_id: u64,
     pub x: f64,
     pub y: f64,
     pub z: f64,
@@ -51,7 +51,22 @@ impl ClientMove {
         ::std::default::Default::default()
     }
 
-    // uint32 id = 1;
+    // uint64 tick = 1;
+
+
+    pub fn get_tick(&self) -> u64 {
+        self.tick
+    }
+    pub fn clear_tick(&mut self) {
+        self.tick = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_tick(&mut self, v: u64) {
+        self.tick = v;
+    }
+
+    // uint32 id = 2;
 
 
     pub fn get_id(&self) -> u32 {
@@ -66,34 +81,19 @@ impl ClientMove {
         self.id = v;
     }
 
-    // uint32 session_id_lo = 2;
+    // uint64 session_id = 3;
 
 
-    pub fn get_session_id_lo(&self) -> u32 {
-        self.session_id_lo
+    pub fn get_session_id(&self) -> u64 {
+        self.session_id
     }
-    pub fn clear_session_id_lo(&mut self) {
-        self.session_id_lo = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_session_id_lo(&mut self, v: u32) {
-        self.session_id_lo = v;
-    }
-
-    // uint32 session_id_hi = 3;
-
-
-    pub fn get_session_id_hi(&self) -> u32 {
-        self.session_id_hi
-    }
-    pub fn clear_session_id_hi(&mut self) {
-        self.session_id_hi = 0;
+    pub fn clear_session_id(&mut self) {
+        self.session_id = 0;
     }
 
     // Param is passed by value, moved
-    pub fn set_session_id_hi(&mut self, v: u32) {
-        self.session_id_hi = v;
+    pub fn set_session_id(&mut self, v: u64) {
+        self.session_id = v;
     }
 
     // double x = 4;
@@ -210,22 +210,22 @@ impl ::protobuf::Message for ClientMove {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    let tmp = is.read_uint32()?;
-                    self.id = tmp;
+                    let tmp = is.read_uint64()?;
+                    self.tick = tmp;
                 },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint32()?;
-                    self.session_id_lo = tmp;
+                    self.id = tmp;
                 },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    let tmp = is.read_uint32()?;
-                    self.session_id_hi = tmp;
+                    let tmp = is.read_uint64()?;
+                    self.session_id = tmp;
                 },
                 4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
@@ -277,14 +277,14 @@ impl ::protobuf::Message for ClientMove {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
+        if self.tick != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.tick, ::protobuf::wire_format::WireTypeVarint);
+        }
         if self.id != 0 {
-            my_size += ::protobuf::rt::value_size(1, self.id, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(2, self.id, ::protobuf::wire_format::WireTypeVarint);
         }
-        if self.session_id_lo != 0 {
-            my_size += ::protobuf::rt::value_size(2, self.session_id_lo, ::protobuf::wire_format::WireTypeVarint);
-        }
-        if self.session_id_hi != 0 {
-            my_size += ::protobuf::rt::value_size(3, self.session_id_hi, ::protobuf::wire_format::WireTypeVarint);
+        if self.session_id != 0 {
+            my_size += ::protobuf::rt::value_size(3, self.session_id, ::protobuf::wire_format::WireTypeVarint);
         }
         if self.x != 0. {
             my_size += 9;
@@ -310,14 +310,14 @@ impl ::protobuf::Message for ClientMove {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.tick != 0 {
+            os.write_uint64(1, self.tick)?;
+        }
         if self.id != 0 {
-            os.write_uint32(1, self.id)?;
+            os.write_uint32(2, self.id)?;
         }
-        if self.session_id_lo != 0 {
-            os.write_uint32(2, self.session_id_lo)?;
-        }
-        if self.session_id_hi != 0 {
-            os.write_uint32(3, self.session_id_hi)?;
+        if self.session_id != 0 {
+            os.write_uint64(3, self.session_id)?;
         }
         if self.x != 0. {
             os.write_double(4, self.x)?;
@@ -375,20 +375,20 @@ impl ::protobuf::Message for ClientMove {
         static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "tick",
+                |m: &ClientMove| { &m.tick },
+                |m: &mut ClientMove| { &mut m.tick },
+            ));
             fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
                 "id",
                 |m: &ClientMove| { &m.id },
                 |m: &mut ClientMove| { &mut m.id },
             ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
-                "session_id_lo",
-                |m: &ClientMove| { &m.session_id_lo },
-                |m: &mut ClientMove| { &mut m.session_id_lo },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
-                "session_id_hi",
-                |m: &ClientMove| { &m.session_id_hi },
-                |m: &mut ClientMove| { &mut m.session_id_hi },
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "session_id",
+                |m: &ClientMove| { &m.session_id },
+                |m: &mut ClientMove| { &mut m.session_id },
             ));
             fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
                 "x",
@@ -436,9 +436,9 @@ impl ::protobuf::Message for ClientMove {
 
 impl ::protobuf::Clear for ClientMove {
     fn clear(&mut self) {
+        self.tick = 0;
         self.id = 0;
-        self.session_id_lo = 0;
-        self.session_id_hi = 0;
+        self.session_id = 0;
         self.x = 0.;
         self.y = 0.;
         self.z = 0.;
@@ -464,6 +464,7 @@ impl ::protobuf::reflect::ProtobufValue for ClientMove {
 #[derive(PartialEq,Clone,Default)]
 pub struct ServerMove {
     // message fields
+    pub tick: u64,
     pub id: u32,
     pub x: f64,
     pub y: f64,
@@ -488,7 +489,22 @@ impl ServerMove {
         ::std::default::Default::default()
     }
 
-    // uint32 id = 1;
+    // uint64 tick = 1;
+
+
+    pub fn get_tick(&self) -> u64 {
+        self.tick
+    }
+    pub fn clear_tick(&mut self) {
+        self.tick = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_tick(&mut self, v: u64) {
+        self.tick = v;
+    }
+
+    // uint32 id = 2;
 
 
     pub fn get_id(&self) -> u32 {
@@ -632,6 +648,13 @@ impl ::protobuf::Message for ServerMove {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
+                    let tmp = is.read_uint64()?;
+                    self.tick = tmp;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
                     let tmp = is.read_uint32()?;
                     self.id = tmp;
                 },
@@ -692,8 +715,11 @@ impl ::protobuf::Message for ServerMove {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
+        if self.tick != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.tick, ::protobuf::wire_format::WireTypeVarint);
+        }
         if self.id != 0 {
-            my_size += ::protobuf::rt::value_size(1, self.id, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(2, self.id, ::protobuf::wire_format::WireTypeVarint);
         }
         if self.x != 0. {
             my_size += 9;
@@ -722,8 +748,11 @@ impl ::protobuf::Message for ServerMove {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.tick != 0 {
+            os.write_uint64(1, self.tick)?;
+        }
         if self.id != 0 {
-            os.write_uint32(1, self.id)?;
+            os.write_uint32(2, self.id)?;
         }
         if self.x != 0. {
             os.write_double(3, self.x)?;
@@ -784,6 +813,11 @@ impl ::protobuf::Message for ServerMove {
         static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "tick",
+                |m: &ServerMove| { &m.tick },
+                |m: &mut ServerMove| { &mut m.tick },
+            ));
             fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
                 "id",
                 |m: &ServerMove| { &m.id },
@@ -840,6 +874,7 @@ impl ::protobuf::Message for ServerMove {
 
 impl ::protobuf::Clear for ServerMove {
     fn clear(&mut self) {
+        self.tick = 0;
         self.id = 0;
         self.x = 0.;
         self.y = 0.;
@@ -915,21 +950,21 @@ impl ::protobuf::reflect::ProtobufValue for Action {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\ngame.proto\"\xed\x01\n\nClientMove\x12\x10\n\x02id\x18\x01\x20\x01(\
-    \rR\x02idB\0\x12$\n\rsession_id_lo\x18\x02\x20\x01(\rR\x0bsessionIdLoB\0\
-    \x12$\n\rsession_id_hi\x18\x03\x20\x01(\rR\x0bsessionIdHiB\0\x12\x0e\n\
-    \x01x\x18\x04\x20\x01(\x01R\x01xB\0\x12\x0e\n\x01y\x18\x05\x20\x01(\x01R\
-    \x01yB\0\x12\x0e\n\x01z\x18\x06\x20\x01(\x01R\x01zB\0\x12\x16\n\x05pitch\
-    \x18\x07\x20\x01(\x01R\x05pitchB\0\x12\x12\n\x03yaw\x18\x08\x20\x01(\x01\
-    R\x03yawB\0\x12#\n\x07actions\x18\t\x20\x03(\x0e2\x07.ActionR\x07actions\
-    B\0:\0\"\xb5\x01\n\nServerMove\x12\x10\n\x02id\x18\x01\x20\x01(\rR\x02id\
-    B\0\x12\x0e\n\x01x\x18\x03\x20\x01(\x01R\x01xB\0\x12\x0e\n\x01y\x18\x04\
-    \x20\x01(\x01R\x01yB\0\x12\x0e\n\x01z\x18\x05\x20\x01(\x01R\x01zB\0\x12\
-    \x16\n\x05pitch\x18\x06\x20\x01(\x01R\x05pitchB\0\x12\x12\n\x03yaw\x18\
-    \x07\x20\x01(\x01R\x03yawB\0\x12#\n\x07actions\x18\x08\x20\x03(\x0e2\x07\
-    .ActionR\x07actionsB\0\x12\x12\n\x03rtt\x18\t\x20\x01(\rR\x03rttB\0:\0*\
-    \"\n\x06Action\x12\x0b\n\x07UNKNOWN\x10\0\x12\t\n\x05SHOOT\x10\x01\x1a\0\
-    B\0b\x06proto3\
+    \n\ngame.proto\"\xd8\x01\n\nClientMove\x12\x14\n\x04tick\x18\x01\x20\x01\
+    (\x04R\x04tickB\0\x12\x10\n\x02id\x18\x02\x20\x01(\rR\x02idB\0\x12\x1f\n\
+    \nsession_id\x18\x03\x20\x01(\x04R\tsessionIdB\0\x12\x0e\n\x01x\x18\x04\
+    \x20\x01(\x01R\x01xB\0\x12\x0e\n\x01y\x18\x05\x20\x01(\x01R\x01yB\0\x12\
+    \x0e\n\x01z\x18\x06\x20\x01(\x01R\x01zB\0\x12\x16\n\x05pitch\x18\x07\x20\
+    \x01(\x01R\x05pitchB\0\x12\x12\n\x03yaw\x18\x08\x20\x01(\x01R\x03yawB\0\
+    \x12#\n\x07actions\x18\t\x20\x03(\x0e2\x07.ActionR\x07actionsB\0:\0\"\
+    \xcb\x01\n\nServerMove\x12\x14\n\x04tick\x18\x01\x20\x01(\x04R\x04tickB\
+    \0\x12\x10\n\x02id\x18\x02\x20\x01(\rR\x02idB\0\x12\x0e\n\x01x\x18\x03\
+    \x20\x01(\x01R\x01xB\0\x12\x0e\n\x01y\x18\x04\x20\x01(\x01R\x01yB\0\x12\
+    \x0e\n\x01z\x18\x05\x20\x01(\x01R\x01zB\0\x12\x16\n\x05pitch\x18\x06\x20\
+    \x01(\x01R\x05pitchB\0\x12\x12\n\x03yaw\x18\x07\x20\x01(\x01R\x03yawB\0\
+    \x12#\n\x07actions\x18\x08\x20\x03(\x0e2\x07.ActionR\x07actionsB\0\x12\
+    \x12\n\x03rtt\x18\t\x20\x01(\rR\x03rttB\0:\0*\"\n\x06Action\x12\x0b\n\
+    \x07UNKNOWN\x10\0\x12\t\n\x05SHOOT\x10\x01\x1a\0B\0b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;
