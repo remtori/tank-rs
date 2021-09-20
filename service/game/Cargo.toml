@@ -12,11 +12,10 @@ clap = "2.0"
 
 # Logging utility
 log = "0.4"
+flexi_logger = "0.19"
 
 # Websocket Impl
 tungstenite = "0.15"
-
-protos = { path = "../../protos" }
 
 [features]
 default = [ "tick-log" ]
